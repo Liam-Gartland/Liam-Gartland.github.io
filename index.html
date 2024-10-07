@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        //HEEHEE
+        window.addEventListener("load", start);
+        let button, buttonBox;
+        let buttonClicked = false;
+        let time, counter;
+        let counterInfo;
+        const clicksRequired = 2;
+        const timePerClick = 5;//seconds
+        function start() {
+            console.log("Started");
+            buttonBox = document.getElementById("button-box");
+            counterInfo = document.getElementById("counter-info");
+
+            randomise();
+
+            time = 0;//seconds
+            counter = 0; //times he has clicked
+
+            loop();
+        }
+
+        function loop() {
+            if (time % timePerClick === 0 && time !== 0) {//Minute is up
+                if (buttonClicked) {
+                    randomise();
+                    counter++;
+                    buttonClicked = false;
+                    if (counter >= clicksRequired) {
+                        console.log("YOU WIN");
+                        giveWinMessage();
+                    }
+                } else {
+                    time = 0;
+                    counter = 0;
+                    randomise();
+                    console.log("FAILUUUUUUUUUUUURRREEEEEEEEEEEEEEE");
+                    alert("You missed it! Start again from 0.");
+                }
+            }
+            updateCounterInfo()
+            console.log("Time: " + time + "s");
+            console.log("Counter: " + counter);
+            console.log("ButtonClicked: " + buttonClicked);
+            time++;
+            setTimeout(loop, 1000);
+        }
+
+        function sleep(milliseconds) {
+            const date = Date.now();
+            let currentDate = null;
+            do {
+                currentDate = Date.now();
+            } while (currentDate - date < milliseconds);
+        }
+
+
+        function onClick() {
+            buttonClicked = true;
+            button.remove();
+        }
+
+        function randomise() {
+            try {button.remove();} catch {}
+            button = document.createElement("button");
+            button.innerHTML = "click";
+            button.onclick = onClick;
+            button.style = "margin-left: " + (50 + (Math.random()*500)) + "px; margin-top: " + (50 + (Math.random()*500)) + "px;";
+            buttonBox.appendChild(button);
+        }
+
+        function updateCounterInfo() {
+            counterInfo.innerHTML = "Clicks left: " + (clicksRequired - counter);
+        }
+
+        function giveWinMessage() {
+            alert("The code is DECOY");
+        }
+
+        function giveWinMessage() {
+            alert("The code is CODE");
+        }
+    </script>
+</head>
+<body>
+    <h1 style="margin-left: auto;margin-right: auto;">Welcome</h1>
+    <h2>Please click the button once a minute, every minute, for an hour</h2>
+    <h2 id="counter-info"></h2>
+    <div id="button-box" style="width: 600px;height: 600px;border: 1px solid black;"></div>
+</body>
+</html>
